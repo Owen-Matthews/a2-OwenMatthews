@@ -1,7 +1,7 @@
 {
-  "name": "",
-  "version": "",
-  "description": "",
+  "name": "a2-OwenMatthews",
+  "version": "1.0.0",
+  "description": "A todo list app for CS4241 Assignment 2",
   "author": "",
   "scripts": {
     "start": "node server.js"
