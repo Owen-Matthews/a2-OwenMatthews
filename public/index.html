@@ -1,18 +1,41 @@
 <!doctype html>
 <html lang='en'>
   <head>
-    <title>CS4241 Assignment 2</title>
+    <title>CS4241 Assignment 2 - Todo List</title>
     <meta charset='utf-8' />
     <script src='js/main.js'></script>
     <link rel='stylesheet' href='css/main.css' />
-    
-    <!-- get rid of favicon error -->
-    <link rel='icon' href='data:;base64,iVBORw0KGgo=' />
+
+
   </head>
   <body>
-    <form>
-      <input type='text' id='yourname' value='your name here'>
-      <button>submit</button>
+  <h1>Todo List</h1>
+    <form id='todo-form'>
+      <input type='text' id='task' placeholder='What needs to get done?' required>
+      <select id="priority">
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+
+      <button type="submit">Add task</button>
     </form>
+
+    <table id='todo-table'>
+
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Priority</th>
+          <th>Created</th>
+          <th>Deadline</th>
+        </tr>
+      </thead>
+
+      <tbody id="todo-body">
+      </tbody>
+
+    </table>
+
   </body>
 </html>

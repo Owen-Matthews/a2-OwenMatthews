@@ -1,4 +1,78 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
 body {
-  background:black;
+  font-family: 'Inter', sans-serif;
+  background:blueviolet;
   color:white;
+  padding:0;
+}
+
+h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+
+#todo-form {
+  font-family: 'Inter', sans-serif;
+  display: flex;
+}
+
+#todo-form input {
+  flex: 0.2;
+  padding: 0.5rem;
+}
+
+#todo-form button {
+  padding: 0.5rem 1rem;
+  background: #2F2CE2;
+  color: white;
+  border: 3px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#todo-table {
+  margin-top: 30px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#todo-table th, #todo-table td {
+  text-align: left;
+  padding: 0.6rem;
+  border-bottom: 1px solid white;
+}
+
+.priority-high {
+  color: red;
+}
+
+.priority-medium {
+  color: orange;
+}
+
+.priority-low {
+  color: green;
+}
+
+.delete-btn {
+  background: none;
+  border: 1px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0.2rem 0.6rem;
+}
+
+.edit-task {
+  padding: 0.3rem;
+  width: 90%;
+}
+
+.save-btn, .cancel-btn, .edit-btn {
+  background: none;
+  border: 1px solid white;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0.2rem 0.6rem;
+  margin-right: 0.3rem;
 }
