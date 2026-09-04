@@ -7,11 +7,20 @@ const http = require( 'http' ),
       dir  = 'public/',
       port = 3000
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
+let appdata = [
+  { id: 1, task: "buy groceries", priority: "medium", created: Date.now() },
+  { id: 2, task: "finish homework", priority: "high", created: Date.now() },
+  { id: 3, task: "do the laundry", priority: "low", created: Date.now() },
 ]
+
+let nextID = 3;
+
+const addDerivedFields = function (item) {
+  const daysbypriority = {high: 1, medium: 3, low: 7};
+  const daysToAdd = daysbypriority[item.priority] || 3;
+  const deadline = item.created + daysToAdd * 24 * 60 * 60 * 1000;
+  return {...item, deadline};
+}
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
@@ -22,6 +31,14 @@ const server = http.createServer( function( request,response ) {
 })
 
 const handleGet = function( request, response ) {
+
+  if ( request.url === '/api/todos' ) {
+    response.writeHead( 200, {'Content-Type': 'application/json'} );
+    response.end( JSON.stringify(appdata));
+    return
+  }
+
+
   const filename = dir + request.url.slice( 1 ) 
 
   if( request.url === '/' ) {
@@ -39,13 +56,34 @@ const handlePost = function( request, response ) {
   })
 
   request.on( 'end', function() {
-    console.log( JSON.parse( dataString ) )
+      const body = JSON.parse( dataString )
     // ... do something with the data here!!!
+    if(request.url === '/add' ) {
+      const newTodo = {
+        id: nextID++,
+        task: body.task,
+        priority: body.priority,
+        created: Date.now()
+      }
+      appdata.push(addDerivedFields(newTodo));
+    }
+    else if( request.url === '/delete' ) {
+      appdata = appdata.filter( item => item.id !== body.id );
+    }
+    else if ( request.url === '/update' ) {
+      appdata = appdata.map(function (item) {
+        if(item.id === body.id) {
+          const updated = {...item, task: body.task, priority: body.priority};
+          return addDerivedFields(updated);
+        }
+        return item;
+      })
+    }
 
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    response.writeHead( 200, {'Content-Type': 'application/json' } );
 
     // change this to incorporate data
-    response.end('test')
+    response.end(JSON.stringify(appdata))
   })
 }
 
@@ -53,22 +91,16 @@ const sendFile = function( response, filename ) {
    const type = mime.getType( filename ) 
 
    fs.readFile( filename, function( err, content ) {
-
      // if the error = null, then we've loaded the file successfully
      if( err === null ) {
-
        // status code: https://httpstatuses.com
        response.writeHeader( 200, { 'Content-Type': type })
        response.end( content )
-
      }else{
-
        // file not found, error code 404
        response.writeHeader( 404 )
        response.end( '404 Error: File Not Found' )
-
      }
    })
 }
-
 server.listen( process.env.PORT || port )
